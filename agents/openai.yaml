@@ -1,0 +1,8 @@
+interface:
+  display_name: "HCI PaperLens"
+  short_description: "Visual HCI paper notes for research seminars"
+  brand_color: "#4F7A55"
+  default_prompt: "Use $hci-paperlens to extract the paper figures and create an evidence-grounded Obsidian reading note for a research seminar."
+
+policy:
+  allow_implicit_invocation: true
