@@ -59,52 +59,13 @@ def main() -> int:
     args = parser.parse_args()
 
     root = args.figure_pack.resolve()
-    crops = files_in(root / "整图裁剪")
-    raw = files_in(root / "原始嵌入图")
-    output = args.output.resolve() if args.output else root / "图片索引.md"
-    source = args.pdf.name if args.pdf else "未指定"
-
-    lines = [
-        f"# {root.name} 图片索引",
-        "",
-        f"- 来源 PDF：`{source}`",
-        f"- 完整 Figure / Table 裁剪：{len(crops)} 张",
-        f"- PDF 原始嵌入图（去重并过滤小元素）：{len(raw)} 张",
-        "",
-        "## 整图裁剪",
-        "",
-    ]
-    if crops:
-        for image in crops:
-            figure = re.search(r"(Figure|Table)_([^_]+)_p(\d+)", image.stem, re.IGNORECASE)
-            label = f"{figure.group(1).title()} {figure.group(2)}，第 {int(figure.group(3))} 页" if figure else "图号和页码请核对"
-            lines.append(
-                f"- `{image.name}`：{label}，{dims(image)}；用途与图注请在视觉检查后补充。"
-            )
-    else:
-        lines.append("- 尚无完整裁剪；请从页面渲染图中裁剪并视觉检查关键 Figure / Table。")
-
-    lines.extend(["", "## 原始嵌入图", ""])
-    if raw:
-        for image in raw:
-            page_match = re.match(r"p(\d+)_", image.name)
-            page = f"第 {int(page_match.group(1))} 页，" if page_match else ""
-            lines.append(f"- `{image.name}`：{page}{dims(image)}")
-    else:
-        lines.append("- 未提取到符合筛选条件的原始嵌入图。")
-
-    lines.extend(
-        [
-            "",
-            "## 使用检查",
-            "",
-            "- 完整图是否保留图例、坐标轴、分图标签和必要标注。",
-            "- 图中文字在笔记预期宽度下是否可读。",
-            "- 已使用图片是否放在首次承担解释作用的位置。",
-            "- Obsidian 嵌入是否使用稳定的库内相对路径。",
-            "",
-        ]
-    )
+    figures = [p for p in files_in(root) if p.stem.startswith('Fig_')]
+    output = args.output.resolve() if args.output else root / '图片索引.md'
+    source = args.pdf.name if args.pdf else '未指定'
+    lines = [f'# {root.name} 图片索引', '', f'- 来源 PDF：{source}', f'- 完整原文 Figures：{len(figures)}', '', '## 完整 Figures', '']
+    for figure in figures:
+        lines.append(f'- {figure.name}: {dims(figure)}')
+    lines.extend(['', '此文件是清单初稿。交付前逐图补充原图号、PDF页码、图注、来源对象或区域坐标、提取方式和使用状态，并对照原文确认完整。', ''])
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text("\n".join(lines), encoding="utf-8")
     print(output)

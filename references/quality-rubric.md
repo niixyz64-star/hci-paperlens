@@ -20,7 +20,8 @@ Use this rubric before handing off a paper note.
 
 ## 3. Figure quality
 
-- A reviewed figure pack exists.
+- The final figure folder contains only complete original Figures and an index; temporary objects/page renders are separate.
+- Complete embedded figures retain original bytes; vector/composite figures use one source-region render without secondary cropping.
 - Each used figure has been visually inspected at readable scale.
 - No legend, axis, subfigure label, or necessary annotation is clipped.
 - Images appear where they explain the narrative.
@@ -44,7 +45,10 @@ Use this rubric before handing off a paper note.
 - Local file links use the destination's established convention.
 - The note and assets use stable, descriptive filenames.
 - `scripts/validate_note_links.py` reports no missing image embeds.
-- Optional PDF exports have been rendered and visually reviewed page by page.
+- PDF is the default; Markdown and Word are delivered when requested.
+- Exported PDF/Word embeds images and faithfully preserves all master content, including diagrams and equations.
+- Every PDF/Word page has been rendered and visually reviewed; no unsupported completion claim is made.
+- No decorative cover/cards are added to plain PDF output.
 
 ## Stop conditions
 

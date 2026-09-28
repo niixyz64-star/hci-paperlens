@@ -12,11 +12,11 @@ It turns three inputs into a research-seminar-ready note:
 
 ## What it produces
 
-- a structured Obsidian Markdown close-reading note;
-- a figure pack with raw embedded images, page renders, complete figure crops, and an index;
+- a plain PDF close-reading note by default, or Markdown / Word on request;
+- a figure pack containing complete original Figures and a provenance index; extraction intermediates stay temporary;
 - a one-minute spoken opening and an 8–10 minute seminar outline;
 - explicit separation between findings, author interpretation, and reviewer inference;
-- optional PDF output when requested.
+- embedded images in PDF/Word for independent sharing; relative-linked assets for Markdown.
 
 ## Install
 
@@ -60,12 +60,16 @@ python scripts/build_figure_index.py OUTPUT_DIR --pdf PAPER.pdf
 python scripts/validate_note_links.py NOTE.md
 ```
 
-The extraction script requires Poppler's `pdftoppm` and `pdfinfo`. It uses `pdfimages` when available and otherwise falls back to `pypdf`. Complete figure cropping and final selection still require visual inspection.
+The extraction script requires Poppler's `pdftoppm` and `pdfinfo`. It uses `pdfimages` when available and otherwise falls back to `pypdf`. Raw candidates are temporary. Prefer complete original embedded images without recropping; render vector/composite Figures once from the source PDF region when necessary. Visual source comparison remains mandatory.
 
 ## Version
 
-Current release: **1.1.1**
+Current release: **2.0.0**
 
 ## License
 
 MIT
+
+## Formats and portability
+
+Write a Markdown master first, then export the requested format (PDF by default). Plain PDF preserves the note structure without decorative covers. Word embeds images and keeps text editable. Markdown must travel with its image folder; copying its text to Feishu does not upload local images. See `references/output-formats.md`.

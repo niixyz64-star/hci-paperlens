@@ -13,7 +13,7 @@
 
 Required inputs are the paper and a note template. The template may be user-supplied or the bundled default. A figure pack is also required before final drafting, but it can be supplied or generated during the task.
 
-Useful optional inputs include an output directory, Zotero key, related-note folder, focus question, preferred language, presentation duration, and a request for PDF export.
+Useful optional inputs include an output directory, Zotero key, related-note folder, focus question, preferred language, presentation duration, and preferred output format.
 
 When the user does not specify them, use sensible defaults:
 
@@ -21,7 +21,8 @@ When the user does not specify them, use sensible defaults:
 - note name: `{ShortTitle} 阅读笔记.md` for Chinese output or `{ShortTitle} Reading Note.md` otherwise;
 - presentation duration: 8–10 minutes;
 - Markdown dialect: Obsidian when the destination is an Obsidian vault;
-- PDF export: off unless requested.
+- final format: PDF unless Markdown, Word, or multiple formats are requested;
+- Markdown master: temporary unless explicitly requested as a deliverable.
 
 Do not hardcode personal drive letters, Zotero folders, temporary attachment locations, or a particular vault structure into reusable output.
 
@@ -144,18 +145,4 @@ Adjust rather than mechanically preserving these times when the user specifies a
 
 ## 6. Delivery
 
-Deliver at minimum:
-
-```text
-paper-directory/
-|-- {ShortTitle} 阅读笔记.md
-`-- 图片素材/
-    `-- {ShortTitle}/
-        |-- 图片索引.md
-        |-- 整图裁剪/
-        `-- 原始嵌入图/
-```
-
-`页面渲染/` may remain when useful for auditing or future recropping. If the user already has an established numbering convention such as `03_RegulAR`, preserve it.
-
-Tell the user where the note and figure pack were saved. If PDF export was requested, render its pages and verify typography, tables, captions, page numbers, and image resolution before delivery.
+Follow [output-formats.md](output-formats.md). Deliver the chosen file(s), a complete-Figure folder and its index. The Markdown master and extraction/rendering intermediates remain temporary unless requested. Default to a plain PDF, not a decorated report. Inspect every exported page and verify embedded images before reporting success.

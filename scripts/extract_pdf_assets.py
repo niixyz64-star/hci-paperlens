@@ -115,7 +115,7 @@ def parse_pages(spec: str | None, total: int) -> list[int]:
 
 def main() -> int:
     parser = argparse.ArgumentParser(
-        description="Extract embedded images and render PDF pages into a PaperLens figure pack."
+        description="Extract embedded images and render PDF pages into a temporary PaperLens candidate directory."
     )
     parser.add_argument("pdf", type=Path)
     parser.add_argument("output_dir", type=Path)
@@ -134,10 +134,8 @@ def main() -> int:
     root = args.output_dir.resolve()
     raw_dir = root / "原始嵌入图"
     page_dir = root / "页面渲染"
-    crop_dir = root / "整图裁剪"
     raw_dir.mkdir(parents=True, exist_ok=True)
     page_dir.mkdir(parents=True, exist_ok=True)
-    crop_dir.mkdir(parents=True, exist_ok=True)
 
     pdfimages = executable("pdfimages", args.poppler_bin, required=False)
     pdftoppm = executable("pdftoppm", args.poppler_bin)
@@ -215,11 +213,11 @@ def main() -> int:
             ]
         )
 
-    print(f"PaperLens figure pack: {root}")
+    print(f"PaperLens temporary candidates: {root}")
     print(
         f"Pages: {total_pages}; embedded images kept: {kept}; pages rendered: {len(render_pages)}"
     )
-    print("Next: visually crop complete figures into 整图裁剪, then build the index.")
+    print("Next: match complete embedded Figures against the PDF; copy originals to final Fig_XX files. Render composite/vector Figures once from source only when necessary.")
     return 0
 
 

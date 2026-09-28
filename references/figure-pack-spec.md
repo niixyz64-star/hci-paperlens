@@ -1,114 +1,31 @@
-# Figure pack specification
+# Complete original Figure specification
 
-## Purpose
-
-The figure pack is a reviewed visual evidence set, not a dump of every PDF object. It must exist before final note drafting.
-
-## Directory structure
-
-Use the user's established structure when present. Otherwise use:
+## Final pack
 
 ```text
 图片素材/{ShortTitle}/
-|-- 图片索引.md
-|-- 整图裁剪/
-|   |-- Figure_01_p01.png
-|   `-- Figure_03_p05.png
-|-- 原始嵌入图/
-|   |-- p01_img01_001.png
-|   `-- p05_img01_003.png
-`-- 页面渲染/
-    |-- page-001.png
-    `-- page-005.png
+  Fig_01.jpg
+  Fig_02.png
+  图片索引.md
 ```
 
-`页面渲染/` is a working and audit folder. It may be omitted from the final pack when the user prefers a compact archive and all crops have been verified.
+Preserve original numbering and supplementary labels. A multi-panel Figure is one complete figure, not a selection of panels. Tables are transcribed as document tables by default; do not dump table/page screenshots or publisher logos into this folder.
 
-## Extraction sequence
+## Extraction and source matching
 
-1. Extract embedded raster images page by page.
-2. Deduplicate exact files and filter tiny decorative assets.
-3. Render PDF pages to PNG for layout-aware review.
-4. Identify complete figures and tables by reading the paper and captions.
-5. Crop complete figures from rendered pages when a figure consists of multiple PDF objects or extracted parts.
-6. Visually inspect every crop.
-7. Build the index and mark which figures are used in the note.
+1. Extract raw image objects and render reference pages into a temporary working directory with `extract_pdf_assets.py`. Objects may be logos, fragments, duplicates, or figures with labels drawn separately.
+2. Visually match each candidate against its original Figure and caption. Page order and image dimensions are not proof of a match.
+3. If one embedded image contains the complete Figure, copy the original image bytes, preserving its extension, aspect ratio and resolution. No recropping, upscaling or recompression merely for appearance.
+4. If a Figure is vector artwork or a composite of objects, render its complete region directly from the PDF once at adequate resolution (typically 250–300 dpi). Define bounds in source-page coordinates, preserving every panel, axis, legend and annotation. Do not guess bounds from resized previews; account for display-to-source scale. Do not crop the rendered result again. If bounds are wrong, correct the source region and rerender from the PDF.
+5. Compare the complete exported Figure side by side with the source page at readable scale. Verify all edges, panel labels, legends and axes. Exclude neighboring columns, headers and footers. Correct incomplete extraction using step 4, not a clipped fragment.
+6. Keep only reviewed, complete Figures in the final pack. Keep raw objects, page renders and debug contact sheets in temporary storage.
 
-`scripts/extract_pdf_assets.py` handles steps 1–3. Cropping and final selection require visual judgment.
+## Captions and provenance
 
-## Naming
+Write captions in the note separately: original Figure number, source PDF page, and what the reader should notice. Preserve captions already inside source image bytes; do not crop to remove them. In the index record filename, original Figure number, PDF page (and printed page when different), dimensions, caption/description, source object or source-region coordinates, extraction method, and used/unused status.
 
-Raw embedded image:
+`build_figure_index.py` creates an inventory draft only. Enrich provenance and captions after visual review before delivery.
 
-```text
-p{page:02d}_img{page_index:02d}_{global_index:03d}.{ext}
-```
+## Linking
 
-Complete crop:
-
-```text
-Figure_{figure_number:02d}_p{page:02d}.png
-Table_{table_number:02d}_p{page:02d}.png
-```
-
-Preserve supplementary labels when needed, for example `Figure_03a_p05.png`.
-
-## Selection criteria
-
-Prioritize:
-
-- teaser or concept figure;
-- system architecture or pipeline;
-- interaction or UI states;
-- study setup when it materially affects interpretation;
-- central quantitative result;
-- representative qualitative cases;
-- design space or taxonomy central to the contribution.
-
-Exclude or leave unused:
-
-- publisher marks, logos, decorative lines, and icons;
-- duplicates and lower-resolution copies;
-- figures unrelated to the note's narrative;
-- unreadable crops;
-- small fragments that lack context.
-
-## Visual QA
-
-For every complete crop, verify:
-
-- no caption, legend, axis label, or subfigure label needed for understanding is clipped;
-- text is readable at the note's expected display width;
-- aspect ratio is unchanged;
-- no large accidental page margins remain;
-- figure number, source page, and index entry agree;
-- personal information is not exposed unintentionally.
-
-## Image index
-
-The index should state the source PDF and counts, then list complete crops and raw images. For each complete crop include, when available:
-
-- filename;
-- page and figure or table number;
-- pixel dimensions;
-- original caption or a faithful short description;
-- explanatory role in the note;
-- used / unused status.
-
-Run `scripts/build_figure_index.py` to create a mechanical first draft, then enrich and correct it after visual inspection.
-
-## Embedding in Obsidian
-
-Prefer a vault-relative embed:
-
-```markdown
-![[图片素材/03_RegulAR/整图裁剪/Figure_03_p05.png|1000]]
-```
-
-Follow it with a note-language caption:
-
-```markdown
-> Figure 3. 系统由任务图构建、运行时监测和影响感知干预组成。（原论文 Figure 3）
-```
-
-Avoid temporary attachment paths and absolute links when a relative vault path is possible.
+Portable Markdown uses note-relative links, for example `![Figure 1](图片素材/Paper/Fig_01.jpg)`. Obsidian embeds are appropriate when the destination is a vault. Package the Markdown and its assets together. PDF and Word must embed the images; never rely on local image paths in those deliverables.
