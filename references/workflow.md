@@ -40,6 +40,8 @@ Read the selected template completely. Extract an internal contract covering:
 
 Remove template usage instructions from the completed note. Preserve the template's style, but adapt its content structure to the paper. A system paper, empirical paper, design study, dataset paper, and benchmark paper should not be forced into identical subsections.
 
+The bundled template uses the RegulAR reading-note narrative. Preserve its applicable top-level order, but replace generic subsection placeholders with paper-specific mechanisms, findings and limitations. Explain formative observations before derived requirements; separate evaluation studies by purpose; organize results by findings rather than figure order. Keep author discussion, author-stated limitations, and reader critique distinct. Research implications should develop a concrete question and a bounded follow-up study or system, using the user's research interests only when known. Follow the bundled template for detailed section guidance; do not import the reference note's paper-specific facts, image paths or cropping conventions.
+
 ## 3. Two-pass reading
 
 ### Pass 1: structural map

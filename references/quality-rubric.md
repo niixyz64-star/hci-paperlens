@@ -32,6 +32,10 @@ Use this rubric before handing off a paper note.
 
 - Frontmatter is valid and contains no template instructions.
 - Heading hierarchy is coherent and empty sections are removed.
+- Applicable sections follow the selected template; method subsections name concrete mechanisms and results subsections state findings, not generic placeholders or figure numbers.
+- Formative observations and requirements are connected where present; separate studies have separate designs and evidence.
+- Discussion, author-stated limitations and reader critique serve distinct purposes without repeating the same summary.
+- Research implications connect a concrete open question to a bounded follow-up proposal; unknown personal interests or venue targets are not invented.
 - The opening paragraph is speakable in roughly one minute.
 - System or method logic is understandable without repeatedly opening the PDF.
 - Experiments are summarized with enough detail to judge the evidence.
@@ -49,6 +53,8 @@ Use this rubric before handing off a paper note.
 - Exported PDF/Word embeds images and faithfully preserves all master content, including diagrams and equations.
 - Every PDF/Word page has been rendered and visually reviewed; no unsupported completion claim is made.
 - No decorative cover/cards are added to plain PDF output.
+- PDF/Word sections flow continuously with paragraph spacing; no unwanted heading page breaks, chapter-based forced breaks, or empty pages remain.
+- Non-final pages with bottom whitespace above roughly one third of the page have been reviewed; avoidable gaps are fixed without shrinking body text, cropping figures, or deleting content.
 
 ## Stop conditions
 

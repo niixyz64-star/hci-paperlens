@@ -1,75 +1,108 @@
 # HCI PaperLens
 
-HCI PaperLens is a Codex skill for producing visually rich, evidence-grounded Obsidian reading notes for CHI, UIST, CSCW, IUI, DIS, and related HCI papers.
+HCI PaperLens 是一个面向 HCI 论文精读和研究组会分享的 Codex skill。它完整阅读论文，以原始 Figure 辅助解释，并把研究动机、方法、实验、结果、局限和后续研究机会组织成有证据依据的分享笔记。
 
-It turns three inputs into a research-seminar-ready note:
+默认交付 PDF，也支持 Markdown、Word 或多格式同时输出。
 
-1. a rule template that defines the note structure;
-2. a reviewed figure pack extracted from the paper;
-3. the full paper as the authority for claims and evidence.
+> 论文提供证据，完整原图帮助解释，笔记结构服务于研究分享。
 
-> Template sets structure, figures carry explanation, the paper supports claims, and the seminar determines narrative order.
+## 主要能力
 
-## What it produces
+- 阅读论文全文及相关附录，核对元数据、研究方法、样本、条件、指标和统计结果；
+- 区分论文发现、作者解释与笔记作者的批判性判断；
+- 提取并使用论文中的完整原始 Figure，不对已提取图片再次裁切；
+- 按“具体机制”组织方法或系统设计，按“研究发现”组织结果；
+- 分开呈现论文讨论、作者明确承认的局限和笔记作者的批判性思考；
+- 生成约 1 分钟的组会开场和默认 8–10 分钟的分享结构；
+- 从论文的机制或证据缺口出发，提出有边界的后续研究问题；
+- 检查图片链接、页面渲染、图文完整性和 PDF/Word 中的异常空白。
 
-- a plain PDF close-reading note by default, or Markdown / Word on request;
-- a figure pack containing complete original Figures and a provenance index; extraction intermediates stay temporary;
-- a one-minute spoken opening and an 8–10 minute seminar outline;
-- explicit separation between findings, author interpretation, and reviewer inference;
-- embedded images in PDF/Word for independent sharing; relative-linked assets for Markdown.
+## 默认输出
 
-## Install
+未指定格式时输出简洁、连续排版的 PDF。章节之间通过段落间距分隔，不强制另起新页，也不会额外添加封面、卡片或海报式装饰。
 
-Copy the `hci-paperlens` folder into your Codex skills directory, typically:
+当用户请求 Markdown 时，文档使用相对路径链接图片，因此 `.md` 文件需要和图片文件夹一起移动。PDF 与 Word 会嵌入图片，可以独立分享。
+
+```text
+{论文简称} 阅读笔记.pdf
+图片素材/{论文简称}/
+  Fig_01.png
+  Fig_02.jpg
+  图片索引.md
+```
+
+## 笔记结构
+
+默认模板参考 RegulAR 阅读笔记的叙事方式，并根据论文类型调整：
+
+1. 速读卡片与论文基本信息；
+2. 约 1 分钟的组会开场；
+3. 研究问题与动机；
+4. 前期需求研究或设计依据（论文包含时）；
+5. 核心贡献；
+6. 按机制展开的方法或系统设计；
+7. 实验设计；
+8. 按发现组织的主要结果；
+9. Discussion 与作者明确承认的局限；
+10. 批判性思考与证据边界；
+11. 对用户选题的启发或一般性的后续研究启发；
+12. 组会讨论问题、分享结构和最终评价。
+
+其中“对我选题的启发”只会在用户明确提供研究方向时定制；否则使用“后续研究启发”，避免替用户假定选题。
+
+## 工作流程
+
+```text
+读取用户模板或默认模板
+        ↓
+完整阅读论文并建立结构图
+        ↓
+提取、匹配并检查完整原始 Figure
+        ↓
+建立论点—证据映射
+        ↓
+按照组会叙事撰写 Markdown 主文档
+        ↓
+导出指定格式并逐页检查
+```
+
+## 安装
+
+将整个 `hci-paperlens` 文件夹复制到 Codex skills 目录：
 
 ```text
 ~/.codex/skills/hci-paperlens/
 ```
 
-Then invoke it explicitly or ask Codex to closely read an HCI paper for a research seminar.
+随后可以显式调用：
 
 ```text
-Use $hci-paperlens to extract this paper's figures and create an evidence-grounded Obsidian reading note for my research seminar.
+请使用 $hci-paperlens 精读这篇论文，并生成组会分享 PDF。
 ```
 
-The skill also supports automatic discovery for relevant requests.
+也可以直接提出论文精读、论文分享笔记等相关请求，由 Codex 自动选择该 skill。
 
-## Workflow
-
-```text
-template contract
-      ↓
-full-paper structural pass
-      ↓
-figure extraction and visual review
-      ↓
-claim–evidence reading pass
-      ↓
-seminar-oriented note composition
-      ↓
-fact, figure, and link validation
-```
-
-The bundled template is a reusable default. A user-supplied template always takes precedence.
-
-## Helper scripts
+## 辅助脚本
 
 ```text
-python scripts/extract_pdf_assets.py PAPER.pdf OUTPUT_DIR
-python scripts/build_figure_index.py OUTPUT_DIR --pdf PAPER.pdf
+python scripts/extract_pdf_assets.py PAPER.pdf TEMP_ASSETS
+python scripts/build_figure_index.py FINAL_FIGURE_FOLDER --pdf PAPER.pdf
 python scripts/validate_note_links.py NOTE.md
 ```
 
-The extraction script requires Poppler's `pdftoppm` and `pdfinfo`. It uses `pdfimages` when available and otherwise falls back to `pypdf`. Raw candidates are temporary. Prefer complete original embedded images without recropping; render vector/composite Figures once from the source PDF region when necessary. Visual source comparison remains mandatory.
+这些脚本只负责辅助提取、索引和检查，不能替代论文全文阅读与图片视觉核对。原始提取对象可能包含标志、碎片、重复图片或组合图的一部分；只有经过原文页面对照的完整 Figure 才能进入最终图片素材文件夹。
 
-## Version
+## 当前版本
 
-Current release: **2.0.0**
+**v2.0.2**
 
-## License
+本版本包含：
 
-MIT
+- 默认 PDF 交付及 Markdown / Word 多格式支持；
+- 完整原始 Figure 工作流；
+- 连续排版与空白页检查规范；
+- 参考 RegulAR 阅读笔记重构的内容模板。
 
-## Formats and portability
+## 许可证
 
-Write a Markdown master first, then export the requested format (PDF by default). Plain PDF preserves the note structure without decorative covers. Word embeds images and keeps text editable. Markdown must travel with its image folder; copying its text to Feishu does not upload local images. See `references/output-formats.md`.
+[MIT](LICENSE)
