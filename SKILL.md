@@ -2,7 +2,7 @@
 name: hci-paperlens
 description: Create evidence-grounded, illustrated close-reading notes for HCI papers and research seminars. Deliver PDF by default, or Markdown and Word when requested. Use for full-paper synthesis of methods, studies, findings, limitations, and research opportunities; adapt to other research domains when explicitly requested. Not for abstract-only summaries or generic literature lists.
 metadata:
-  version: "2.0.2"
+  version: "2.0.3"
   short-description: "Evidence-grounded paper notes with complete original figures"
 ---
 
@@ -24,7 +24,7 @@ Read the full paper, explain it through complete original figures, and prepare a
 1. Read the full paper and relevant appendices. Map metadata, contributions, method, evaluations, figures, results and limitations.
 2. Read [references/figure-pack-spec.md](references/figure-pack-spec.md). Build a reviewed set of complete original Figures before final drafting. Prefer original embedded images; no secondary cropping. For vector/composite figures, one complete source-region render is the fallback.
 3. Read [references/workflow.md](references/workflow.md). Build an internal claim–evidence map with exact conditions, sample sizes, measures and statistics. Separate findings, author interpretation and your own inference. Preserve nonsignificant and contradictory evidence.
-4. Write the Markdown master using the user's template or [assets/hci-paper-note-template.md](assets/hci-paper-note-template.md). The default follows the RegulAR reading-note structure: mechanism-based method subsections, finding-led results, separate discussion/author limitations/personal critique, and a bounded follow-up research proposal. Adapt conditional sections to the paper rather than filling generic headings. Integrate figures at their explanatory use with original figure number, source page and a concise caption. Include a one-minute opening and an 8–10 minute outline unless another duration is requested.
+4. Write the Markdown master using the user's template or [assets/hci-paper-note-template.md](assets/hci-paper-note-template.md). Treat the bundled template as a reusable chapter framework, not as a model paper: use mechanism-based method subsections, finding-led results, separate author discussion, author-stated limitations and reader critique, plus a bounded follow-up research proposal. Adapt conditional sections to the paper rather than filling generic headings. Never import facts, terminology, examples, image conventions or research interests from a previous paper or note. Integrate figures at their explanatory use with original figure number, source page and a concise caption. Include a one-minute opening and an 8–10 minute outline unless another duration is requested.
 5. Read [references/output-formats.md](references/output-formats.md) and export the selected formats from the same master. Preserve content across formats, including equations and diagrams.
 6. Apply [references/quality-rubric.md](references/quality-rubric.md). Inspect each image against the original page; validate Markdown links; render every exported document page for layout review. Fix omissions or clipping before delivery.
 
